@@ -1,6 +1,7 @@
 package board
 
 import (
+	"fmt"
 	"pranav/cell"
 	"strconv"
 )
@@ -11,6 +12,7 @@ type Board struct {
 }
 
 var MainBoard *Board
+var Nilboard *Board
 
 func createNewBoard(n int) *Board {
 	var newb Board
@@ -40,89 +42,92 @@ func CreateNewBoard(n int) *Board {
 	return MainBoard
 }
 
-// func (b * Board) check(n int){
-// 	 if n >=
-// }
-
-func (b *Board) CheckWineer() string {
+func (b *Board) CheckWineer() (string, string) {
 	verwin, str1 := b.checkVertical()
 	if verwin {
-		return str1
+		var ans = "this is vertical win"
+		return str1, ans
 	}
 	horwin, str2 := b.checkHor()
 	if horwin {
-		return str2
+		var ans1 = "this is hor win"
+		return str2, ans1
 	}
 	dwin, str3 := b.diagonalCheck()
 	if dwin {
-		return str3
+		var ans2 = "this is dig win"
+		return str3, ans2
 	}
-	return ""
+	return "", ""
 
 }
 
 func (b *Board) checkVertical() (bool, string) {
-	var count1 int
-	var count2 int
+	var vercount1 int
+	var vercount2 int
 	for i := 0; i < b.Sixe; i++ {
 		for j := i; j < b.Sixe*b.Sixe; j = j + b.Sixe {
 			if b.Cells[j].Mark == "X" {
-				count1++
+				vercount1++
 			} else if b.Cells[j].Mark == "O" {
-				count2++
+				vercount2++
 			}
 		}
-		if count1 == b.Sixe {
+		if vercount1 == b.Sixe {
 			return true, "X"
-		} else if count2 == b.Sixe {
+		} else if vercount2 == b.Sixe {
 			return true, "O"
 		}
-		count1 = 0
-		count2 = 0
+		vercount1 = 0
+		vercount2 = 0
 	}
 	return false, ""
 }
+
 func (b *Board) checkHor() (bool, string) {
-	var count1 int
-	var count2 int
+	var horcount1 int
+	var horcount2 int
+	count := 1
 	for i := 0; i < b.Sixe*b.Sixe; i = i + b.Sixe {
-		for j := i; j < b.Sixe*b.Sixe; j++ {
+		for j := i; count <= b.Sixe; j++ {
 			if b.Cells[j].Mark == "X" {
-				count1++
+				horcount1++
 			} else if b.Cells[j].Mark == "O" {
-				count2++
+				horcount2++
 			}
+			count++
 		}
-		if count1 == b.Sixe {
+		if horcount1 == b.Sixe {
 			return true, "X"
-		} else if count2 == b.Sixe {
+		} else if horcount2 == b.Sixe {
 			return true, "O"
 		}
-		count1 = 0
-		count2 = 0
+		horcount1 = 0
+		horcount2 = 0
+		count = 1
 	}
 	return false, ""
 }
 
 func (b *Board) diagonalCheck() (bool, string) {
-	var count1 int
-	var count2 int
+	var digcount1 int
+	var digcount2 int
 
 	for j := 0; j < b.Sixe*b.Sixe; j += b.Sixe + 1 {
 		if b.Cells[j].Mark == "X" {
-			count1++
+			digcount1++
 		} else if b.Cells[j].Mark == "O" {
-			count2++
+			digcount2++
 		}
 	}
-	if count1 == b.Sixe {
+	if digcount1 == b.Sixe {
 		return true, "X"
-	} else if count2 == b.Sixe {
+	} else if digcount2 == b.Sixe {
 		return true, "O"
 	}
-	count1 = 0
-	count2 = 0
-	for j := b.Sixe - 1; j < b.Sixe*b.Sixe; j += b.Sixe - 1 {
+	count1 := 0
+	count2 := 0
+	for j := b.Sixe - 1; j < b.Sixe*b.Sixe-1; j += b.Sixe - 1 {
 		if b.Cells[j].Mark == "X" {
 			count1++
 		} else if b.Cells[j].Mark == "O" {
@@ -136,6 +141,20 @@ func (b *Board) diagonalCheck() (bool, string) {
 	}
 
 	return false, ""
+}
+
+func (b *Board) Printboard() {
+	count := 0
+	for i := 0; i < len(b.Cells); i++ {
+		if count == b.Sixe {
+			fmt.Println()
+			count = 0
+		}
+		fmt.Print(b.Cells[i], " ")
+		count++
+	}
+	fmt.Println()
+
 }
 
 // for i := 0; i < 8; i++ {

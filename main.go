@@ -2,20 +2,12 @@ package main
 
 import (
 	"fmt"
+	"pranav/board"
 	"pranav/game"
 )
 
 func main() {
-	// var test = game.CreateNewGame("pranav", "yash")
-
-	// test.Play(5, "pranav")
-	// test.Play(4, "yash")
-	// test.Play(2, "pranav")
-	// test.Play(1, "yash")
-	// test.Play(8, "pranav")
-
-	// fmt.Println(test)
-	count := 0
+	//count := 0
 	var test *game.Game
 	var name1, name2 string
 	var sixe int
@@ -36,7 +28,7 @@ func main() {
 			continue
 		}
 		fmt.Println("Please enter the sixe of the board:")
-		//fmt.Scanln(&sixe)
+
 		_, error3 := fmt.Scanln(&sixe)
 		if checkError(error3) {
 			fmt.Println(error3)
@@ -47,40 +39,45 @@ func main() {
 		test = game.CreateNewGame(name1, name2, sixe)
 		fmt.Println(test)
 		fmt.Println()
-		for i := 0; i < len(test.MainBoard.Cells); i++ {
-			if count == sixe {
-				fmt.Println()
-				count = 0
-			}
-			fmt.Print(test.MainBoard.Cells[i], " ")
-			count++
-		}
+		test.MainBoard.Printboard()
+		// for i := 0; i < len(test.MainBoard.Cells); i++ {
+		// 	if count == sixe {
+		// 		fmt.Println()
+		// 		count = 0
+		// 	}
+		// 	fmt.Print(test.MainBoard.Cells[i], " ")
+		// 	count++
+		// }
 		fmt.Println()
 
 		for {
-			if test.Turn == sixe*sixe {
-				var str = test.MainBoard.CheckWineer()
+			if test.Turn == sixe*sixe+1 {
+				var str, ans = test.MainBoard.CheckWineer()
 				if str == "" {
-					fmt.Println("nobody won")
+					fmt.Println("nobody won ", ans)
+					test.MainBoard.Printboard()
 
 				} else if str == "X" {
-					fmt.Println(name1, " wins")
-
+					fmt.Println(name1, " wins ", ans)
+					test.MainBoard.Printboard()
 				} else {
-					fmt.Println(name2, " wins")
+					fmt.Println(name2, " wins ", ans)
+					test.MainBoard.Printboard()
 
 				}
 
 				break
 			}
 			if test.Turn >= (sixe + (sixe - 1)) {
-				Test := test.MainBoard.CheckWineer()
+				Test, ans := test.MainBoard.CheckWineer()
 
 				if Test == "X" {
-					fmt.Println("Winner is ", name1)
+					fmt.Println("Winner is ", name1, " ", ans)
+					test.MainBoard.Printboard()
 					break
 				} else if Test == "O" {
-					fmt.Println("Winner is ", name2)
+					fmt.Println("Winner is ", name2, " ", ans)
+					test.MainBoard.Printboard()
 					break
 				}
 			}
@@ -125,6 +122,8 @@ func main() {
 		var req string
 		fmt.Scan(&req)
 		if req == "Y" {
+			board.MainBoard = board.Nilboard
+
 			continue
 		}
 		break
