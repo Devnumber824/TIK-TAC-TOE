@@ -6,14 +6,10 @@ type PLayer struct {
 	id   int
 }
 
-func CreateNewPlayer(name string, id int) *PLayer {
+func CreateNewPlayer(name string, id int, mark string) *PLayer {
 	var newp PLayer
 	newp.Name = name
 	newp.id = id
-	if id == 1 {
-		newp.Mark = "X"
-	} else if id == 2 {
-		newp.Mark = "O"
-	}
+	newp.Mark = mark
 	return &newp
 }
