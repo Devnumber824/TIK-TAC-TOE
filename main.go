@@ -213,8 +213,8 @@ func main() {
 		}
 		fmt.Println()
 		fmt.Println("IF Want to play more press Y")
-		var req string
-		fmt.Scan(&req)
+		req, _ := reader.ReadString('\n')
+		req = strings.TrimSuffix(req, "\r\n")
 		if req == "Y" {
 			board.MainBoard = board.Nilboard
 
